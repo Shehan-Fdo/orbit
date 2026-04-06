@@ -6,7 +6,6 @@ Orbit is a ultra-minimalist, developer-focused static site generator built with 
 
 - **Markdown Power**: Full support for common Markdown syntax.
 - **Frontmatter Support**: Easily define page titles and metadata.
-- **Premium Aesthetics**: Built-in dark mode and elegant typography.
 - **Zero Config**: Just run the build script and your site is ready.
 
 ## Getting Started
