@@ -1,4 +1,4 @@
-export default function Layout(title, content) {
+export default function Layout(title, content, sidebarHtml = '', baseRel = './') {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -9,11 +9,19 @@ export default function Layout(title, content) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="${baseRel}styles/index.css">
+    <link rel="stylesheet" href="${baseRel}styles/sidebar.css">
 </head>
 <body>
-    <div class="container">
-        ${content}
+    <div class="layout-wrapper">
+        <aside class="sidebar">
+            ${sidebarHtml}
+        </aside>
+        <main class="main-content">
+            <div class="container">
+                ${content}
+            </div>
+        </main>
     </div>
 </body>
 </html>

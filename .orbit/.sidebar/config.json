@@ -1,0 +1,147 @@
+[
+  {
+    "group": "Pages",
+    "items": [
+      {
+        "title": "REST API Design Guide",
+        "path": "api-design.html"
+      },
+      {
+        "title": "CSS Cheatsheet",
+        "path": "css-cheatsheet.html"
+      },
+      {
+        "title": "Docker Basics",
+        "path": "docker-basics.html"
+      },
+      {
+        "title": "Getting Started with Linux",
+        "path": "getting-started.html"
+      },
+      {
+        "title": "Git Reference",
+        "path": "git-reference.html"
+      },
+      {
+        "title": "HTTP Status Codes",
+        "path": "http-status-codes.html"
+      },
+      {
+        "title": "My Orbit Site",
+        "path": "index.html"
+      },
+      {
+        "title": "JavaScript Tips & Tricks",
+        "path": "javascript-tips.html"
+      },
+      {
+        "title": "Keyboard Shortcuts",
+        "path": "keyboard-shortcuts.html"
+      },
+      {
+        "title": "Lesson 1 - Introduction to Orbit",
+        "path": "lesson_1.html"
+      },
+      {
+        "title": "Markdown Guide",
+        "path": "markdown-guide.html"
+      },
+      {
+        "title": "Node.js Snippets",
+        "path": "node-snippets.html"
+      },
+      {
+        "title": "Python Basics",
+        "path": "python-basics.html"
+      },
+      {
+        "title": "Regex Reference",
+        "path": "regex-reference.html"
+      },
+      {
+        "title": "SQL Cheatsheet",
+        "path": "sql-cheatsheet.html"
+      },
+      {
+        "title": "Vim Reference",
+        "path": "vim-reference.html"
+      }
+    ]
+  },
+  {
+    "group": "Backend",
+    "items": [
+      {
+        "title": "PostgreSQL Quick Reference",
+        "path": "backend/databases/postgres.html"
+      },
+      {
+        "title": "Node.js Modules",
+        "path": "backend/nodejs/modules.html"
+      },
+      {
+        "title": "Python Decorators",
+        "path": "backend/python/decorators.html"
+      }
+    ]
+  },
+  {
+    "group": "Devops",
+    "items": [
+      {
+        "title": "Docker Compose",
+        "path": "devops/docker/compose.html"
+      },
+      {
+        "title": "Git Branching Strategy",
+        "path": "devops/git/branching.html"
+      },
+      {
+        "title": "Linux File Permissions",
+        "path": "devops/linux/permissions.html"
+      }
+    ]
+  },
+  {
+    "group": "Reference",
+    "items": [
+      {
+        "title": "Regex Groups & Lookaheads",
+        "path": "reference/regex/groups.html"
+      },
+      {
+        "title": "Terminal Shortcuts",
+        "path": "reference/shortcuts/terminal.html"
+      }
+    ]
+  },
+  {
+    "group": "Web-dev",
+    "items": [
+      {
+        "title": "CSS Flexbox",
+        "path": "web-dev/css/flexbox.html"
+      },
+      {
+        "title": "CSS Custom Properties",
+        "path": "web-dev/css/variables.html"
+      },
+      {
+        "title": "HTML Overview",
+        "path": "web-dev/html/index.html"
+      },
+      {
+        "title": "Semantic HTML",
+        "path": "web-dev/html/semantic.html"
+      },
+      {
+        "title": "DOM Manipulation",
+        "path": "web-dev/javascript/dom.html"
+      },
+      {
+        "title": "JavaScript Promises",
+        "path": "web-dev/javascript/promises.html"
+      }
+    ]
+  }
+]

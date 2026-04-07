@@ -46,7 +46,7 @@ body {
 /* Custom text selection color */
 ::selection {
     background-color: #007bff33;
-    color: var(--text-color);
+    color: inherit;
 }
 
 .container {
