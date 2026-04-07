@@ -36,7 +36,7 @@ export function generateSidebarConfig(pagesDir) {
     
     const parts = relPath.split('/');
     const isRootItem = parts.length === 1;
-    const groupName = isRootItem ? "Pages" : parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
+    const groupName = isRootItem ? "ROOT" : parts[0].charAt(0).toUpperCase() + parts[0].slice(1);
     
     if (!itemsByFolder[groupName]) {
       itemsByFolder[groupName] = [];
@@ -44,14 +44,28 @@ export function generateSidebarConfig(pagesDir) {
 
     itemsByFolder[groupName].push({
       title: data.title || parts[parts.length - 1].replace('.md', ''),
-      path: relPath.replace('.md', '.html')
+      path: relPath.replace('.md', '.html'),
+      order: data.order !== undefined ? data.order : 9999
     });
   });
 
-  const config = Object.keys(itemsByFolder).map(group => ({
-    group,
-    items: itemsByFolder[group]
-  }));
+  Object.keys(itemsByFolder).forEach(group => {
+    itemsByFolder[group].sort((a, b) => {
+      if (a.order !== b.order) return a.order - b.order;
+      return a.title.localeCompare(b.title);
+    });
+  });
+
+  const config = Object.keys(itemsByFolder)
+    .sort((a, b) => {
+        if (a === "ROOT") return -1;
+        if (b === "ROOT") return 1;
+        return a.localeCompare(b);
+    })
+    .map(group => ({
+      group,
+      items: itemsByFolder[group]
+    }));
 
   // Auto-generate the config file
   fs.writeFileSync(
@@ -62,17 +76,30 @@ export function generateSidebarConfig(pagesDir) {
   return config;
 }
 
-export function renderSidebar(config, baseRel) {
+export function renderSidebar(config, baseRel, currentPath) {
   let html = `<nav class="sidebar-nav">`;
   config.forEach(section => {
-    html += `<div class="sidebar-group">`;
-    html += `<h3>${section.group}</h3>`;
-    html += `<ul>`;
-    section.items.forEach(item => {
-      // prefix URL with baseRel for proper local file resolution
-      html += `<li><a href="${baseRel}${item.path}">${item.title}</a></li>`;
-    });
-    html += `</ul></div>`;
+    const isActiveGroup = section.items.some(item => item.path === currentPath);
+    html += `<div class="sidebar-group${section.group === 'ROOT' ? ' root-group' : ''}">`;
+    
+    if (section.group === "ROOT") {
+      html += `<ul class="root-links" style="margin-top: 0; margin-bottom: 2rem;">`;
+      section.items.forEach(item => {
+        const isActive = item.path === currentPath ? 'class="active"' : '';
+        html += `<li><a href="${baseRel}${item.path}" ${isActive}>${item.title}</a></li>`;
+      });
+      html += `</ul>`;
+    } else {
+      html += `<details ${isActiveGroup ? 'open' : ''}>`;
+      html += `<summary><h3>${section.group}</h3></summary>`;
+      html += `<ul>`;
+      section.items.forEach(item => {
+        const isActive = item.path === currentPath ? 'class="active"' : '';
+        html += `<li><a href="${baseRel}${item.path}" ${isActive}>${item.title}</a></li>`;
+      });
+      html += `</ul></details>`;
+    }
+    html += `</div>`;
   });
   html += `</nav>`;
 

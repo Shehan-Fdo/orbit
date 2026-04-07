@@ -26,7 +26,7 @@ function getAllFiles(dir, relativePath = '') {
 
 const md = new MarkdownIt();
 const pagesDir = './pages';
-const distDir = './dist';
+const distDir = './dist/content';
 
 if (!fs.existsSync(distDir)) fs.mkdirSync(distDir);
 
@@ -43,7 +43,7 @@ const sidebarCssSrc = path.join('.orbit', '.sidebar', 'sidebar.css');
 const sidebarCssDest = path.join(distDir, 'styles', 'sidebar.css');
 if (fs.existsSync(sidebarCssSrc)) {
   if (!fs.existsSync(path.dirname(sidebarCssDest))) {
-      fs.mkdirSync(path.dirname(sidebarCssDest), { recursive: true });
+    fs.mkdirSync(path.dirname(sidebarCssDest), { recursive: true });
   }
   fs.copyFileSync(sidebarCssSrc, sidebarCssDest);
 }
@@ -61,15 +61,15 @@ files.forEach(({ fullPath, relPath }) => {
   const depth = (relPath.match(/\//g) || []).length;
   const baseRel = depth === 0 ? './' : '../'.repeat(depth);
 
-  const sidebarHtml = renderSidebar(sidebarConfig, baseRel);
-  
+  const sidebarHtml = renderSidebar(sidebarConfig, baseRel, relPath.replace('.md', '.html'));
+
   // Notice we now pass `baseRel` through so layout can utilize it
   const fullHtml = Layout(data.title, htmlContent, sidebarHtml, baseRel);
 
   // Convert the output extension map to the mirrored final build destination
   const outPath = path.join(distDir, relPath.replace('.md', '.html'));
   const outDir = path.dirname(outPath);
-  
+
   // Build needed directory trees prior to file writes
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
