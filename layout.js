@@ -1,4 +1,22 @@
-export default function Layout(title, content, sidebarHtml = '', baseRel = './') {
+export default function Layout(title, content, sidebarHtml = '', baseRel = './', prev = null, next = null) {
+  let paginationHtml = '';
+  if (prev || next) {
+    paginationHtml = `
+      <div class="pagination">
+        ${prev ? `
+        <a href="${baseRel}${prev.path}" class="pagination-link prev">
+          <span class="pagination-label">Previous</span>
+          <span class="pagination-title">« ${prev.title}</span>
+        </a>` : '<div class="pagination-spacer"></div>'}
+        ${next ? `
+        <a href="${baseRel}${next.path}" class="pagination-link next">
+          <span class="pagination-label">Next</span>
+          <span class="pagination-title">${next.title} »</span>
+        </a>` : '<div class="pagination-spacer"></div>'}
+      </div>
+    `;
+  }
+
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -32,6 +50,7 @@ export default function Layout(title, content, sidebarHtml = '', baseRel = './')
         <main class="main-content">
             <div class="container">
                 ${content}
+                ${paginationHtml}
             </div>
         </main>
         <label for="sidebar-toggle" class="sidebar-overlay"></label>

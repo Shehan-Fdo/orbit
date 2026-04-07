@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import { getAllFiles, parsePrefix, cleanRelPath, compareOrders } from '../../utils.js';
 
+
 /** Convert a clean folder name like 'web-dev' or 'node_js' → 'Web Dev' / 'Node Js' */
 function formatFolderName(name) {
   return name.split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
@@ -188,4 +189,30 @@ export function generateSidebarConfig(pagesDir) {
 
 export function renderSidebar(tree, baseRel, currentPath) {
   return `<nav class="sidebar-nav">${renderNode(tree, baseRel, currentPath, true)}</nav>`;
+}
+
+/**
+ * Return a flat ordered list of all pages in the same depth-first order
+ * the sidebar renders them: files at each level first, then sub-folders
+ * (each sorted by their effective order).
+ *
+ * Returns: Array<{ title: string, path: string }>
+ */
+export function getFlatPageList(tree) {
+  const pages = [];
+
+  function walk(node) {
+    // Files at this level (already sorted by buildTree → sortNode)
+    node.files.forEach(f => pages.push({ title: f.title, path: f.path }));
+
+    // Sub-folders in the same order renderNode uses
+    const folderEntries = Object.entries(node.folders).sort(([nameA, childA], [nameB, childB]) => {
+      const cmp = compareOrders(childA.order, childB.order);
+      return cmp !== 0 ? cmp : nameA.localeCompare(nameB);
+    });
+    folderEntries.forEach(([, child]) => walk(child));
+  }
+
+  walk(tree);
+  return pages;
 }

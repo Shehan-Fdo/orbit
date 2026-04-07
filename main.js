@@ -5,7 +5,7 @@ import MarkdownIt from 'markdown-it';
 import chokidar from 'chokidar';
 import { createHighlighter } from 'shiki';
 import Layout from './layout.js';
-import { generateSidebarConfig, renderSidebar } from './.orbit/.sidebar/sidebar.js';
+import { generateSidebarConfig, renderSidebar, getFlatPageList } from './.orbit/.sidebar/sidebar.js';
 import { getAllFiles, cleanRelPath } from './utils.js';
 
 const pagesDir = './src/pages';
@@ -38,7 +38,11 @@ async function init() {
   });
 
   function build() {
-    if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
+    // Clear out the previous build to prevent leftover/ghost HTML files
+    if (fs.existsSync(distDir)) {
+      fs.rmSync(distDir, { recursive: true, force: true });
+    }
+    fs.mkdirSync(distDir, { recursive: true });
 
     // Copy styles
     if (fs.existsSync('./src/styles')) {
@@ -61,6 +65,7 @@ async function init() {
 
     // Scaffold configuration and tree navigation map
     const sidebarConfig = generateSidebarConfig(pagesDir);
+    const flatPages = getFlatPageList(sidebarConfig);
     const files = getAllFiles(pagesDir);
 
     files.forEach(({ fullPath, relPath }) => {
@@ -76,7 +81,13 @@ async function init() {
       const cleanPath = cleanRelPath(relPath).replace(/\.mdx?$/, '.html');
 
       const sidebarHtml = renderSidebar(sidebarConfig, baseRel, cleanPath);
-      const fullHtml = Layout(data.title, htmlContent, sidebarHtml, baseRel);
+
+      // Determine prev / next neighbours from the flat ordered page list
+      const pageIdx = flatPages.findIndex(p => p.path === cleanPath);
+      const prev = pageIdx > 0 ? flatPages[pageIdx - 1] : null;
+      const next = pageIdx < flatPages.length - 1 ? flatPages[pageIdx + 1] : null;
+
+      const fullHtml = Layout(data.title, htmlContent, sidebarHtml, baseRel, prev, next);
 
       const outPath = path.join(distDir, cleanPath);
       const outDir = path.dirname(outPath);
