@@ -318,6 +318,12 @@ pre code {
     border-radius: 0;
 }
 
+/* Shiki syntax highlighting — each highlighted line is a <span class="line"> */
+.shiki .line {
+    display: block;
+    min-height: 1em;
+}
+
 /* =====================
    TABLES
 ===================== */

@@ -103,18 +103,19 @@ order: 1
 ## Project Structure
 
 ```
-├── pages/               # Markdown source files (supports deep recursive nesting)
-│   └── <folder>/
-│       └── _meta.json   # Optional: control folder label, order, and children order
-├── styles/              # CSS stylesheets
-├── assets/              # Images and other static assets
-├── dist/                # Generated static site output
-├── main.js              # Central build engine + watch mode
-├── layout.js            # HTML template and DOM hierarchy
-├── utils.js             # Shared utilities (getAllFiles, parsePrefix, cleanRelPath)
+├── src/
+│   ├── pages/               # Markdown source files (.md and .mdx)
+│   │   └── <folder>/
+│   │       └── _meta.json   # Optional: control folder label, order, and children order
+│   └── styles/              # CSS stylesheets
+├── public/                  # Static assets (images, fonts, etc.) → copied to dist/assets/
+├── dist/                    # Generated static site output
+├── main.js                  # Central build engine + watch mode
+├── layout.js                # HTML template and DOM hierarchy
+├── utils.js                 # Shared utilities (getAllFiles, parsePrefix, cleanRelPath)
 └── .orbit/
     └── .sidebar/
-        ├── sidebar.js   # Sidebar config generator + HTML renderer
-        ├── sidebar.css  # Sidebar stylesheet
-        └── config.json  # Auto-generated nav map (do not edit)
+        ├── sidebar.js       # Sidebar config generator + HTML renderer
+        ├── sidebar.css      # Sidebar stylesheet
+        └── config.json      # Auto-generated nav map (gitignored)
 ```

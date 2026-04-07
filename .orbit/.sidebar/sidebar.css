@@ -138,6 +138,22 @@
     margin-top: 0.25rem;
 }
 
+/* Nested sub-folder groups */
+.sidebar-subgroup {
+    padding-left: 0.75rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+    margin-left: 0.25rem;
+    margin-top: 0.15rem;
+}
+
+.sidebar-subgroup h3 {
+    font-size: 0.65rem;
+}
+
+.sidebar-subgroup summary {
+    padding: 0.2rem 0.5rem;
+}
+
 /* Summary / group header */
 .sidebar-group summary {
     list-style: none;
@@ -186,7 +202,7 @@
     color: #475569;
 }
 
-.sidebar-group details[open] summary h3::before {
+.sidebar-group details[open] > summary h3::before {
     transform: rotate(90deg);
 }
 
@@ -232,7 +248,7 @@
 }
 
 .sidebar-group a.active {
-    color: #3b82f6;
+    color: #ffffff;
     background-color: rgba(59, 130, 246, 0.08);
     font-weight: 500;
 }
@@ -307,4 +323,4 @@
     .layout-wrapper {
         display: block;
     }
-} 
+}

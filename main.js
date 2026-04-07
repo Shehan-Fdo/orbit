@@ -8,7 +8,7 @@ import Layout from './layout.js';
 import { generateSidebarConfig, renderSidebar } from './.orbit/.sidebar/sidebar.js';
 import { getAllFiles, cleanRelPath } from './utils.js';
 
-const pagesDir = './pages';
+const pagesDir = './src/pages';
 const distDir = './dist/content';
 
 async function init() {
@@ -40,12 +40,13 @@ async function init() {
   function build() {
     if (!fs.existsSync(distDir)) fs.mkdirSync(distDir, { recursive: true });
 
-    // Copy assets
-    if (fs.existsSync('./styles')) {
-      fs.cpSync('./styles', path.join(distDir, 'styles'), { recursive: true });
+    // Copy styles
+    if (fs.existsSync('./src/styles')) {
+      fs.cpSync('./src/styles', path.join(distDir, 'styles'), { recursive: true });
     }
-    if (fs.existsSync('./assets')) {
-      fs.cpSync('./assets', path.join(distDir, 'assets'), { recursive: true });
+    // Copy public/ assets → dist/content/assets/ (like Vite's public/ folder)
+    if (fs.existsSync('./public')) {
+      fs.cpSync('./public', path.join(distDir, 'assets'), { recursive: true });
     }
 
     // Ensure sidebar.css gets copied over to dist
@@ -98,7 +99,7 @@ async function init() {
     console.log('Watching for changes... 👀  (Ctrl+C to stop)');
 
     const watcher = chokidar.watch(
-      ['pages', 'styles', 'assets', 'layout.js', 'utils.js', '.orbit/.sidebar/sidebar.js', '.orbit/.sidebar/sidebar.css'],
+      ['src/pages', 'src/styles', 'public', 'layout.js', 'utils.js', '.orbit/.sidebar/sidebar.js', '.orbit/.sidebar/sidebar.css'],
       { ignoreInitial: true, persistent: true }
     );
 
