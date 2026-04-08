@@ -23,7 +23,7 @@ export default function Layout(seo = {}, content, sidebarHtml = '', baseRel = '.
   const canonical = seo.canonical || '';
   const pageKeywords = Array.isArray(seo.keywords) ? seo.keywords.join(', ') : '';
   const language = siteMeta.language || 'en';
-  const homeHref = `${baseRel}../index.html`;
+  const homeHref = `${baseRel}../`;
   const twitterCard = seo.twitterCard || siteMeta.twitterCard || 'summary_large_image';
   const twitterSite = seo.twitterSite || siteMeta.twitterSite || '';
   const structuredData = seo.structuredData ? JSON.stringify(seo.structuredData) : '';

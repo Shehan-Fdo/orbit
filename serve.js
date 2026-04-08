@@ -44,7 +44,10 @@ function sendFile(filePath, res) {
 
 function resolveRequestPath(urlPath) {
   const decoded = decodeURIComponent((urlPath || '/').split('?')[0]);
-  const safePath = path.normalize(decoded).replace(/^(\.\.[\\/])+/, '');
+  const safePath = path
+    .normalize(decoded)
+    .replace(/^([\\/])+/, '')
+    .replace(/^(\.\.[\\/])+/, '');
   const candidate = path.join(rootDir, safePath);
 
   if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
@@ -63,7 +66,19 @@ function resolveRequestPath(urlPath) {
 }
 
 const server = http.createServer((req, res) => {
-  const filePath = resolveRequestPath(req.url || '/');
+  const requestUrl = new URL(req.url || '/', `http://${req.headers.host || '127.0.0.1'}`);
+  const pathname = requestUrl.pathname;
+
+  // Canonical clean URLs: never expose /index.html
+  if (pathname === '/index.html' || pathname.endsWith('/index.html')) {
+    const cleanPath = pathname.replace(/index\.html$/, '') || '/';
+    const location = `${cleanPath}${requestUrl.search || ''}`;
+    res.writeHead(308, { Location: location });
+    res.end();
+    return;
+  }
+
+  const filePath = resolveRequestPath(`${pathname}${requestUrl.search || ''}`);
   if (!filePath) {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
     res.end('404 Not Found');
