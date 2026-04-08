@@ -16,7 +16,7 @@ export default function Layout(title, content, sidebarHtml = '', baseRel = './',
       </div>
     `;
   }
-    // <script src="https://pl28879057.profitablecpmratenetwork.com/6f/85/84/6f85842f0b72b56041e693d0b4e6718c.js"></script> Ads terra
+  // <script src="https://pl28879057.profitablecpmratenetwork.com/6f/85/84/6f85842f0b72b56041e693d0b4e6718c.js"></script> Ads terra
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -38,13 +38,15 @@ export default function Layout(title, content, sidebarHtml = '', baseRel = './',
         <label for="sidebar-toggle" class="sidebar-toggle-label">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
         </label>
-        <span class="site-title-mobile">Orbit ✨</span>
+        <a href="/dist/" style="color: inherit; text-decoration: none;">
+        <span class="site-title-mobile">Webnotes</span>
+</a>
     </div>
 
     <div class="layout-wrapper">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h2>Orbit ✨</h2>
+                <h2><a href="/dist/" style="color: inherit; text-decoration: none; cursor: pointer;">Webnotes</a></h2>
             </div>
             ${sidebarHtml}
         </aside>
