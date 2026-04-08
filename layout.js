@@ -16,7 +16,7 @@ export default function Layout(title, content, sidebarHtml = '', baseRel = './',
       </div>
     `;
   }
-
+    // <script src="https://pl28879057.profitablecpmratenetwork.com/6f/85/84/6f85842f0b72b56041e693d0b4e6718c.js"></script> Ads terra
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -29,6 +29,7 @@ export default function Layout(title, content, sidebarHtml = '', baseRel = './',
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="${baseRel}styles/index.css">
     <link rel="stylesheet" href="${baseRel}styles/sidebar.css">
+
 </head>
 <body>
     <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
@@ -50,12 +51,14 @@ export default function Layout(title, content, sidebarHtml = '', baseRel = './',
         <main class="main-content">
             <div class="container">
                 ${content}
+                
                 ${paginationHtml}
             </div>
         </main>
         <label for="sidebar-toggle" class="sidebar-overlay"></label>
     </div>
 </body>
+
 </html>
   `.trim();
 }
