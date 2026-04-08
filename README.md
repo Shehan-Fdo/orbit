@@ -3,6 +3,13 @@
 Orbit is a minimalist static site generator for markdown-based learning notes.  
 Write content in `src/pages`, run a build, and Orbit outputs a fully linked static site with sidebar navigation, pagination, and SEO metadata.
 
+## Documentation
+
+- Master onboarding: `get-started.md`
+- Content authoring: `docs/content-authoring.md`
+- Architecture internals: `docs/architecture.md`
+- Deployment workflow: `docs/deployment.md`
+
 ## Highlights
 
 - Markdown-first workflow with frontmatter support (`.md` and `.mdx` files are parsed as markdown content)
