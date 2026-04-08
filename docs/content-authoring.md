@@ -27,7 +27,7 @@ Recommended baseline:
 title: Topic Title
 description: What this topic teaches in one concise sentence.
 order: 1
-image: /assets/topic-cover.png
+image: /content/assets/topic-cover.png
 keywords:
   - keyword one
   - keyword two

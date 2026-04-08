@@ -124,7 +124,7 @@ title: Laptop Hardware Components
 description: Understand laptop hardware components for CompTIA A+ prep.
 author: Webnotes
 order: 1
-image: /assets/laptop-og.png
+image: /content/assets/laptop-og.png
 keywords:
   - comptia a+
   - laptop hardware
@@ -147,7 +147,7 @@ Create/edit `metadata.json` at project root to define defaults used across the w
   "url": "https://webnotes.site",
   "defaultTitle": "Webnotes",
   "defaultDescription": "Practical learning notes for web development, programming, and tech concepts.",
-  "defaultImage": "/assets/og-default.png",
+  "defaultImage": "/content/assets/og-default.png",
   "author": "Webnotes",
   "twitterCard": "summary_large_image",
   "twitterSite": "@webnotes",

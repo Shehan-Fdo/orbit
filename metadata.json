@@ -3,7 +3,7 @@
   "url": "https://webnotes.site",
   "defaultTitle": "Webnotes",
   "defaultDescription": "Practical learning notes for web development, programming, and tech concepts.",
-  "defaultImage": "/assets/og-default.png",
+  "defaultImage": "/content/assets/og-default.png",
   "author": "Webnotes",
   "twitterCard": "summary_large_image",
   "twitterSite": "@webnotes",

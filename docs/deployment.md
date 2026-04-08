@@ -151,7 +151,7 @@ Cause:
 Fix:
 
 - place assets under `public`
-- reference as `/assets/<name>`
+- reference as `/content/assets/<name>`
 - rebuild
 
 ### Old content still visible
