@@ -98,7 +98,7 @@
 }
 
 .sidebar-header h2 {
-    color: #f8fafc;
+    color: #fbfcf8;
     margin: 0;
     font-size: 1.1rem;
     font-weight: 600;
@@ -202,7 +202,7 @@
     color: #475569;
 }
 
-.sidebar-group details[open] > summary h3::before {
+.sidebar-group details[open]>summary h3::before {
     transform: rotate(90deg);
 }
 
