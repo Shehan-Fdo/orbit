@@ -1,43 +1,137 @@
 # Orbit 🚀
 
-Orbit is an ultra-minimalist, developer-focused static site generator built with Node.js. It transforms your Markdown notes into elegantly styled HTML pages with zero configuration.
+Orbit is a minimalist static site generator for markdown-based learning notes.  
+Write content in `src/pages`, run a build, and Orbit outputs a fully linked static site with sidebar navigation, pagination, and SEO metadata.
 
-## Features
+## Highlights
 
-- **Markdown & MDX**: Full support for `.md` and `.mdx` files — Markdown content in both renders identically.
-- **Frontmatter Support**: Easily define page titles and metadata using YAML.
-- **Auto Sidebar**: Navigation is generated automatically from your `pages/` folder structure.
-- **Flexible Ordering**: Control sidebar sort order via `_meta.json`, frontmatter, or filename prefixes.
-- **Watch Mode**: Live rebuilds on file change with `npm run dev`.
-- **Zero Config**: No setup needed — just write Markdown and build.
+- Markdown-first workflow with frontmatter support (`.md` and `.mdx` files are parsed as markdown content)
+- Auto-generated sidebar from folder structure
+- Flexible ordering with frontmatter, `_meta.json`, or filename/folder prefixes
+- Built-in pagination between pages
+- Build-time SEO pipeline (meta tags, JSON-LD, sitemap, robots, RSS, report)
+- Watch mode for local iteration
 
-## Getting Started
+## Quick Start
 
-### Installation
+### 1) Install dependencies
 
 ```bash
 npm install
 ```
 
-### Build Your Site (one-shot)
-
-Transforms all `.md` files in `pages/` into HTML inside `dist/content/`.
+### 2) Build site
 
 ```bash
 npm run build
 ```
 
-### Dev Mode (live rebuild)
-
-Watches `pages/`, `styles/`, and `assets/` for changes and automatically rebuilds on save.
+### 3) Develop with live rebuild
 
 ```bash
 npm run dev
 ```
 
-## Global Site Metadata
+### 4) Preview built output
 
-Create and edit `metadata.json` in the project root to define global SEO defaults:
+```bash
+npm run preview
+```
+
+## Build Commands
+
+- `npm run build` — full site build into `dist/`
+- `npm run dev` — watch mode + rebuild on source changes
+- `npm run preview` — serve built site locally
+- `npm run seo:check` — run build pipeline and write SEO report
+- `npm run lint` — syntax checks for core JS files
+
+## Content Location and Output
+
+### Source
+
+- `src/pages/**` — markdown content
+- `src/styles/**` — site CSS copied into build
+- `public/**` — static assets copied to `dist/content/assets/`
+
+### Output
+
+- Root landing page: `dist/index.html`
+- Content pages: `dist/content/<clean-route>/index.html`
+- Course index pages: `dist/content/<course-slug>/index.html`
+
+Orbit uses directory-style routes, so links look like:
+
+- `/content/web-dev/intro/`
+- `/content/compTia-a-plus/mobile-devices/laptop-hardware-components/`
+
+## Folder and File Naming
+
+You can prefix folders/files with ordering markers. Orbit strips these from the final route and UI label.
+
+Examples:
+
+- `[1]__web-dev/`
+- `[1.1]__css-basics/`
+- `[1.1.0]__selectors.md`
+- Legacy numeric format like `01-intro.md` also works
+
+## Ordering Rules (Highest Priority First)
+
+| Priority | Method | Scope |
+|---|---|---|
+| 1 | Frontmatter `order` | Per file |
+| 2 | Parent `_meta.json` `items` mapping | Per file |
+| 3 | Prefix order (`[n]__name` or `01-name`) | File/folder |
+| 4 | Alphabetical fallback | File/folder |
+
+## `_meta.json` (Per Folder)
+
+Place a `_meta.json` inside any content folder to control folder label/order and child item order.
+
+```json
+{
+  "order": 1,
+  "label": "Web Dev",
+  "items": {
+    "learn-html": 1,
+    "learn-javascript": 2
+  }
+}
+```
+
+Field meanings:
+
+- `order` — position of this folder in parent sidebar
+- `label` — display name override in sidebar
+- `items` — map of clean child filename/folder-name to sort index
+
+## Frontmatter Reference
+
+Orbit reads frontmatter for both navigation and SEO:
+
+```yaml
+---
+title: Laptop Hardware Components
+description: Understand laptop hardware components for CompTIA A+ prep.
+author: Webnotes
+order: 1
+image: /assets/laptop-og.png
+keywords:
+  - comptia a+
+  - laptop hardware
+canonical: https://webnotes.site/content/compTia-a-plus/mobile-devices/laptop-hardware-components/
+twitterCard: summary_large_image
+twitterSite: "@webnotes"
+schemaType: TechArticle
+date: 2026-04-08
+lastModified: 2026-04-09
+---
+```
+
+## Global Metadata (`metadata.json`)
+
+Create/edit `metadata.json` at project root to define defaults used across the whole site.
 
 ```json
 {
@@ -50,136 +144,93 @@ Create and edit `metadata.json` in the project root to define global SEO default
   "twitterCard": "summary_large_image",
   "twitterSite": "@webnotes",
   "language": "en",
-  "keywords": ["web development notes", "programming notes"]
+  "strictSeo": false,
+  "minifyHtml": true,
+  "keywords": [
+    "web development notes",
+    "programming notes",
+    "developer learning"
+  ]
 }
 ```
 
-These values are applied globally to:
-- homepage SEO tags
-- course index page SEO tags
-- all markdown pages (as fallback values)
+### Metadata fields
 
-Additional optional flags:
-- `strictSeo` (`true`/`false`): fail build if SEO audit reports warnings.
-- `minifyHtml` (`true`/`false`): minify generated HTML output.
+- `siteName` — brand/site label used in title composition
+- `url` — canonical site base URL (required for best sitemap/canonical/feed output)
+- `defaultTitle` — fallback title
+- `defaultDescription` — fallback description
+- `defaultImage` — fallback social image (relative or absolute URL)
+- `author` — default author
+- `twitterCard` — default twitter card type
+- `twitterSite` — default twitter handle
+- `language` — page language
+- `keywords` — fallback keyword list
+- `strictSeo` — fail build when SEO warnings exist
+- `minifyHtml` — minify generated HTML
 
-## Ordering & Sidebar Control
+## SEO Pipeline (Autogenerated During Build)
 
-Orbit resolves sidebar order using the following priority (highest wins):
+Orbit generates SEO data automatically every build:
 
-| Priority | Method | Scope |
-|---|---|---|
-| 1 | Frontmatter `order` field | Per file |
-| 2 | `_meta.json` `items` entry | Per file (set by parent folder) |
-| 3 | `[n]__` bracket prefix on filename/folder | Per file or folder ✅ Recommended |
-| 4 | Numeric prefix `01-name` (legacy) | Per file or folder |
-| 5 | Alphabetical fallback | Default |
-
-### `[n]__` Bracket Prefix *(recommended)*
-
-Prefix any file or folder name with `[order]__` to control its position in the sidebar.
-The prefix is stripped from the display name and the output URL automatically.
-
-```
-pages/
-├── [1]__web-dev/
-│   ├── [1.0]__learn-html.md
-│   ├── [1.1]__learn-css/
-│   │   ├── [1.1.0]__vanilla-css.md
-│   │   └── [1.1.1]__tailwind.md
-│   └── [1.2]__learn-javascript.md
-└── [2]__programming/
-    ├── [2.0]__python.md
-    └── [2.1]__javascript.md
-```
-
-The `order` value supports dotted notation for deep hierarchies — `"1.1.0"` sorts before `"1.1.1"`,
-and `"1.2"` sorts before `"2"`. Items without a prefix fall back to alphabetical order after all prefixed items.
-
-### `_meta.json` (per-folder config)
-
-For cases where you don't want to rename files, drop a `_meta.json` inside any folder:
-
-```json
-{
-  "order": 1,
-  "label": "Web Dev",
-  "items": {
-    "learn-html":       1,
-    "learn-javascript": 2
-  }
-}
-```
-
-| Field | Description |
-|---|---|
-| `order` | Position of this folder in the parent sidebar group |
-| `label` | Override the auto-formatted display name of the folder |
-| `items` | Map of clean filenames (no extension, no prefix) → sort order |
-
-### Frontmatter Support
-
-Pin a specific page's position directly in its YAML frontmatter, and add SEO / metadata fields:
-
-```yaml
----
-title: Getting Started
-description: Learn how to set up and configure Orbit quickly.
-image: /assets/banner.png
-author: John Doe
-keywords:
-  - orbit
-  - static site generator
-canonical: https://webnotes.site/content/web-dev/getting-started.html
-order: 1
----
-```
-
-Orbit automatically takes these fields and injects OpenGraph and Twitter Card `<meta>` tags into each generated page.
-
-If a page does not define `description`, Orbit now auto-generates one from the markdown content (trimmed excerpt), then falls back to `metadata.json` defaults.
-
-## Autogenerated SEO Outputs
-
-Every `npm run build` now auto-generates:
+- Page-level `<title>`, `<meta name="description">`, OpenGraph, and Twitter tags
+- Canonical URLs
+- JSON-LD structured data (`TechArticle` by default, override with `schemaType`)
 - `dist/sitemap.xml`
 - `dist/robots.txt`
 - `dist/feed.xml` (RSS)
-- `dist/seo-report.json` (warnings for missing/weak metadata)
+- `dist/seo-report.json`
 
-Orbit also injects JSON-LD structured data (`TechArticle` by default) into each page.  
-You can override schema type per page with:
+### SEO fallback strategy per page
 
-```yaml
-schemaType: Article
-```
+For each page, Orbit resolves fields in this order:
 
-## Quality Commands
+1. Frontmatter value  
+2. Auto-generated value from markdown content (for description excerpt)  
+3. Global default from `metadata.json`
 
-```bash
-npm run lint
-npm run seo:check
-```
+This ensures each page has usable SEO even if only minimal frontmatter is provided.
 
-`seo:check` runs the full pipeline and writes `dist/seo-report.json`.  
-Set `strictSeo: true` in `metadata.json` to make warnings fail the build.
+## Pagination and Navigation
+
+- Sidebar and page order are generated from the same internal tree.
+- Previous/Next links are automatically injected into every content page.
+- Active page state is reflected in sidebar navigation.
 
 ## Project Structure
 
-```
+```text
 ├── src/
-│   ├── pages/               # Markdown source files (.md and .mdx)
-│   │   └── <folder>/
-│   │       └── _meta.json   # Optional: control folder label, order, and children order
-│   └── styles/              # CSS stylesheets
-├── public/                  # Static assets (images, fonts, etc.) → copied to dist/assets/
-├── dist/                    # Generated static site output
-├── main.js                  # Central build engine + watch mode
-├── layout.js                # HTML template and DOM hierarchy
-├── utils.js                 # Shared utilities (getAllFiles, parsePrefix, cleanRelPath)
-└── .orbit/
-    └── .sidebar/
-        ├── sidebar.js       # Sidebar config generator + HTML renderer
-        ├── sidebar.css      # Sidebar stylesheet
-        └── config.json      # Auto-generated nav map (gitignored)
+│   ├── pages/                 # Markdown sources
+│   │   └── .../_meta.json     # Optional folder config
+│   └── styles/                # Styles copied to dist/content/styles
+├── public/                    # Static assets copied to dist/content/assets
+├── dist/                      # Generated static output
+├── metadata.json              # Global SEO/site defaults
+├── main.js                    # Build engine + watch mode + SEO generation
+├── layout.js                  # Page template and meta tag rendering
+├── utils.js                   # Shared utility helpers
+└── .orbit/.sidebar/
+    ├── sidebar.js             # Sidebar config + rendering logic
+    ├── sidebar.css            # Sidebar styles
+    └── config.json            # Auto-generated tree snapshot
 ```
+
+## Troubleshooting
+
+- Missing canonical/sitemap URLs:
+  - Ensure `metadata.json` has a valid `url`
+- Build fails in strict SEO mode:
+  - Check `dist/seo-report.json` and fix warnings
+- Sidebar order not as expected:
+  - Verify `order` in frontmatter, `_meta.json`, and filename prefixes
+- Social image not showing:
+  - Confirm `image` path exists in `public/` (or use absolute URL)
+
+## Recommended Workflow
+
+1. Add/update content in `src/pages`
+2. Fill frontmatter for important pages (title, description, image, date)
+3. Run `npm run build`
+4. Review `dist/seo-report.json`
+5. Use `npm run preview` to verify pages and metadata output locally

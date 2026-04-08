@@ -1,0 +1,77 @@
+import http from 'http';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const rootDir = path.join(__dirname, 'dist');
+const port = Number(process.env.PORT || 5500);
+
+const mimeTypes = {
+  '.html': 'text/html; charset=utf-8',
+  '.css': 'text/css; charset=utf-8',
+  '.js': 'text/javascript; charset=utf-8',
+  '.json': 'application/json; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8',
+  '.svg': 'image/svg+xml',
+  '.png': 'image/png',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.gif': 'image/gif',
+  '.webp': 'image/webp',
+  '.woff': 'font/woff',
+  '.woff2': 'font/woff2',
+};
+
+function sendFile(filePath, res) {
+  fs.readFile(filePath, (err, data) => {
+    if (err) {
+      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+      res.end('500 Internal Server Error');
+      return;
+    }
+    const ext = path.extname(filePath).toLowerCase();
+    res.writeHead(200, {
+      'Content-Type': mimeTypes[ext] || 'application/octet-stream',
+      'Cache-Control': 'no-cache',
+    });
+    res.end(data);
+  });
+}
+
+function resolveRequestPath(urlPath) {
+  const decoded = decodeURIComponent((urlPath || '/').split('?')[0]);
+  const safePath = path.normalize(decoded).replace(/^(\.\.[\\/])+/, '');
+  const candidate = path.join(rootDir, safePath);
+
+  if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
+    return candidate;
+  }
+
+  if (fs.existsSync(candidate) && fs.statSync(candidate).isDirectory()) {
+    const indexPath = path.join(candidate, 'index.html');
+    if (fs.existsSync(indexPath)) return indexPath;
+  }
+
+  const folderIndex = path.join(rootDir, safePath, 'index.html');
+  if (fs.existsSync(folderIndex)) return folderIndex;
+
+  return null;
+}
+
+const server = http.createServer((req, res) => {
+  const filePath = resolveRequestPath(req.url || '/');
+  if (!filePath) {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('404 Not Found');
+    return;
+  }
+  sendFile(filePath, res);
+});
+
+server.listen(port, () => {
+  console.log(`Serving dist as web root: http://127.0.0.1:${port}`);
+});

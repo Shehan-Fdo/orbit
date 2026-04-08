@@ -9,6 +9,11 @@ function formatFolderName(name) {
   return name.split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
 }
 
+function toRoutePath(relPath) {
+  const cleanPath = cleanRelPath(relPath).replace(/\.mdx?$/, '');
+  return `${cleanPath}/`;
+}
+
 /**
  * Read _meta.json from a folder if it exists.
  * Returns an empty object if the file is absent or malformed.
@@ -81,7 +86,7 @@ function buildTree(files, pagesDir) {
 
     const item = {
       title: data.title || formatFolderName(cleanFilename),
-      path: cleanRelPath(relPath).replace(/\.mdx?$/, '.html'),
+      path: toRoutePath(relPath),
       // Precedence: frontmatter > _meta.json items > filename prefix
       order: data.order !== undefined      ? data.order
            : metaItemOrder !== undefined   ? metaItemOrder
