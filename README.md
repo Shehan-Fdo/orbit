@@ -9,6 +9,7 @@ Write content in `src/pages`, run a build, and Orbit outputs a fully linked stat
 - Content authoring: `docs/content-authoring.md`
 - Architecture internals: `docs/architecture.md`
 - Deployment workflow: `docs/deployment.md`
+- Quick deployment steps: `DEPLOYMENT_CHECKLIST.md`
 
 ## Highlights
 

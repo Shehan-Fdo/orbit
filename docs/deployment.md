@@ -43,8 +43,90 @@ Most static hosts work out of the box.
 Recommended settings:
 
 - publish directory: `dist`
+- build command: `npm run build`
 - no special rewrites required for folder-style routes
 - preserve XML content types for sitemap/feed
+
+## Deployment settings (copy/paste reference)
+
+Use these as the minimum settings in your hosting provider.
+
+### Core project settings
+
+- **Framework preset**: None / Static site
+- **Build command**: `npm run build`
+- **Output directory**: `dist`
+- **Node version**: `20` (recommended)
+- **Install command**: `npm install`
+
+### Production metadata setting
+
+Before production deploy, set this correctly in `metadata.json`:
+
+- `url`: your exact production base URL (for canonical URLs, sitemap, RSS)
+
+Example:
+
+```json
+{
+  "url": "https://your-domain.com"
+}
+```
+
+### Netlify
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Node version env var: `NODE_VERSION=20`
+
+Optional `netlify.toml`:
+
+```toml
+[build]
+  command = "npm run build"
+  publish = "dist"
+```
+
+Included in this repo:
+
+- `netlify.toml`
+
+### Vercel
+
+- Framework preset: `Other`
+- Build command: `npm run build`
+- Output directory: `dist`
+- Install command: `npm install`
+- Node version: `20.x`
+
+Included in this repo:
+
+- `vercel.json`
+
+### Cloudflare Pages
+
+- Framework preset: `None`
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Node version compatibility: `20`
+
+Included in this repo:
+
+- `wrangler.toml`
+
+### GitHub Pages (via Actions)
+
+- Build in CI with Node 20
+- Upload `dist` as Pages artifact
+- Deploy artifact in workflow
+
+Included in this repo:
+
+- `.github/workflows/deploy-pages.yml`
+
+Required GitHub repo setting:
+
+- In Settings -> Pages -> Source, choose `GitHub Actions`.
 
 ## Common deployment pitfalls
 
