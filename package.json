@@ -5,7 +5,10 @@
   "main": "main.js",
   "scripts": {
     "dev": "node main.js --watch",
-    "build": "node main.js"
+    "build": "node main.js",
+    "preview": "node serve.js",
+    "seo:check": "node main.js --seo-check",
+    "lint": "node --check main.js && node --check layout.js && node --check utils.js && node --check .orbit/.sidebar/sidebar.js"
   },
   "keywords": [],
   "author": "Shehan",

@@ -1,0 +1,18 @@
+{
+  "siteName": "Webnotes",
+  "url": "https://webnotes.site",
+  "defaultTitle": "Webnotes",
+  "defaultDescription": "Practical learning notes for web development, programming, and tech concepts.",
+  "defaultImage": "/assets/og-default.png",
+  "author": "Webnotes",
+  "twitterCard": "summary_large_image",
+  "twitterSite": "@webnotes",
+  "language": "en",
+  "strictSeo": false,
+  "minifyHtml": true,
+  "keywords": [
+    "web development notes",
+    "programming notes",
+    "developer learning"
+  ]
+}
