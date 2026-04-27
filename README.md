@@ -1,7 +1,22 @@
-# Orbit 🚀
+# create-orbitjs 🚀
 
-Orbit is a minimalist static site generator for markdown-based learning notes.  
-Write content in `src/pages`, run a build, and Orbit outputs a fully linked static site with sidebar navigation, pagination, and SEO metadata.
+`create-orbitjs` scaffolds a new Orbit project.
+
+Create a new site with:
+
+```bash
+npm create orbitjs@latest my-notes
+```
+
+Then:
+
+```bash
+cd my-notes
+npm install
+npm run dev
+```
+
+The generated Orbit project is a minimalist static site generator for markdown-based learning notes.
 
 ## Documentation
 

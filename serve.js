@@ -44,11 +44,14 @@ function sendFile(filePath, res) {
 
 function resolveRequestPath(urlPath) {
   const decoded = decodeURIComponent((urlPath || '/').split('?')[0]);
-  const safePath = path
-    .normalize(decoded)
-    .replace(/^([\\/])+/, '')
-    .replace(/^(\.\.[\\/])+/, '');
-  const candidate = path.join(rootDir, safePath);
+  const stripPrefix = decoded.replace(/^([\\/])+/, '');
+  const candidate = path.join(rootDir, stripPrefix);
+
+  if (!candidate.startsWith(rootDir)) {
+    return null;
+  }
+
+  const safePath = path.relative(rootDir, candidate);
 
   if (fs.existsSync(candidate) && fs.statSync(candidate).isFile()) {
     return candidate;
@@ -80,8 +83,16 @@ const server = http.createServer((req, res) => {
 
   const filePath = resolveRequestPath(`${pathname}${requestUrl.search || ''}`);
   if (!filePath) {
-    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end('404 Not Found');
+    const errorPagePath = path.join(rootDir, '404.html');
+    fs.readFile(errorPagePath, (err, data) => {
+      if (err) {
+        res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('404 Not Found');
+      } else {
+        res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.end(data);
+      }
+    });
     return;
   }
   sendFile(filePath, res);

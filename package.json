@@ -1,5 +1,5 @@
 {
-  "name": "orbit",
+  "name": "webnotes",
   "version": "1.0.0",
   "description": "A minimalist Markdown-to-HTML static site generator",
   "main": "main.js",
@@ -11,10 +11,12 @@
     "lint": "node --check main.js && node --check layout.js && node --check utils.js && node --check .orbit/.sidebar/sidebar.js"
   },
   "keywords": [],
-  "author": "Shehan",
+  "author": "Webnotes",
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "chokidar": "^5.0.0",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.1.1",
