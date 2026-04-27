@@ -13,6 +13,7 @@ This document explains how Orbit builds the site internally.
 ## Build pipeline sequence
 
 1. Read `metadata.json` and merge with defaults.
+1.5. Recursively sanitize frontmatter quotes in all `.md` files to prevent YAML parsing crashes.
 2. Recreate output root (`dist/content`).
 3. Copy:
    - `src/styles` -> `dist/content/styles`
@@ -25,12 +26,13 @@ This document explains how Orbit builds the site internally.
 8. Highlight code fences with Shiki.
 9. Compute cleaned route path and relative base links.
 10. Build page SEO object (frontmatter -> generated fallback -> global defaults).
-11. Render full HTML via `layout.js`.
+11. Render full HTML via `layout.js` (including embedded third-party scripts like Vercel Analytics, Speed Insights, and Google AdSense).
 12. Optionally minify HTML (`metadata.json.minifyHtml`).
-13. Write each page to `<route>/index.html`.
+13. Write each page to `<route>/index.html` (displaying a real-time CLI progress bar).
 14. Generate:
    - root landing page (`dist/index.html`)
    - course index pages (`dist/content/<course>/index.html`)
+   - 404 error page (`dist/404.html`)
 15. Run SEO audit and write `dist/seo-report.json`.
 16. Generate `sitemap.xml`, `robots.txt`, and `feed.xml`.
 17. Enforce strict SEO mode if enabled.
@@ -46,6 +48,7 @@ Cleaning rules:
 - remove sort prefixes from every path segment
 - remove file extension (`.md` / `.mdx`)
 - normalize with trailing slash for internal links
+- use domain-agnostic absolute root `/` for top-level navigation (Home links, 404 back link, course root).
 
 ## Sidebar and pagination model
 

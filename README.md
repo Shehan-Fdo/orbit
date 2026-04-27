@@ -1,22 +1,18 @@
-# create-orbitjs 🚀
+# Orbit 🚀
 
-`create-orbitjs` scaffolds a new Orbit project.
+Orbit is a minimalist static site generator for markdown-based learning notes. It is designed as a standalone project workspace.
 
-Create a new site with:
+## Getting Started
 
-```bash
-npm create orbitjs@latest my-notes
-```
-
-Then:
+To create a new site using Orbit, simply clone or copy this repository:
 
 ```bash
-cd my-notes
+# Install dependencies
 npm install
+
+# Start the development server
 npm run dev
 ```
-
-The generated Orbit project is a minimalist static site generator for markdown-based learning notes.
 
 ## Documentation
 

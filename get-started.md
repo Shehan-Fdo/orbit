@@ -12,7 +12,8 @@ This is the central onboarding document for Orbit. Use it as your start-to-finis
 ## 10-Minute Setup
 
 1. Install Node.js 18+ (Node 20 LTS recommended).
-2. From project root, install dependencies:
+2. Clone or copy this repository to your local machine.
+3. Open a terminal in the project root and install dependencies:
 
 ```bash
 npm install

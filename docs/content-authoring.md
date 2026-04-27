@@ -7,6 +7,7 @@ This guide is for writing and organizing learning content in Orbit.
 - Source pages: `src/pages/**`
 - Optional folder config: `src/pages/**/_meta.json`
 - Static images/files for pages: `public/**` (served from `/content/assets/...`)
+- Favicon files: `public/favicon/**` (must use specific filenames, see below)
 
 Orbit processes `.md` and `.mdx` as markdown content.
 
@@ -17,6 +18,12 @@ Orbit processes `.md` and `.mdx` as markdown content.
 3. Run `npm run dev` for live rebuild.
 4. Preview final output with `npm run preview`.
 5. Run `npm run seo:check` before shipping.
+
+## Markdown features
+
+- **Code Highlighting**: Orbit uses `shiki` to highlight code blocks automatically. Just use standard markdown fences (e.g., ` ```javascript `). The default theme is `catppuccin-mocha`.
+- **Breadcrumbs**: Breadcrumbs are automatically generated at the top of each page based on your folder hierarchy and `_meta.json` labels.
+- **Pagination**: Previous and Next links are automatically added to the bottom of each page based on the sidebar order.
 
 ## Frontmatter reference
 
@@ -39,6 +46,8 @@ date: 2026-04-08
 lastModified: 2026-04-08
 ---
 ```
+
+> **Note**: Orbit automatically sanitizes and wraps your `title` and `description` frontmatter values in quotes before parsing. This means you can safely use characters like colons (`:`) in your titles without breaking the YAML parser.
 
 ## Ordering model
 
@@ -97,6 +106,18 @@ Example:
 
 - `src/pages/[1]__web-dev/[1.1]__selectors.md`
   -> `/content/web-dev/selectors/`
+
+## Favicon configuration
+
+Orbit automatically generates meta tags for favicons. To customize your site's favicon, place the following files inside `public/favicon/`:
+
+- `favicon.ico`
+- `favicon-16x16.png`
+- `favicon-32x32.png`
+- `apple-touch-icon.png`
+- `site.webmanifest`
+
+These will be automatically copied to `/content/assets/favicon/` during build and linked correctly in every page.
 
 ## SEO writing checklist
 
